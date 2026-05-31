@@ -1,0 +1,25 @@
+2026-05-31 01:40:50,854 - smpath.data - INFO - Loading annotations for dataset: 'MALDI_260_T'
+2026-05-31 01:40:50,922 - smpath.data - INFO -  success, annotations loaded (attr `.no_translated`)
+2026-05-31 01:40:51,193 - smpath.method - INFO - Intensities already normalised, check .uns['norm'] and .layers['raw_X']
+2026-05-31 01:40:51,193 - smpath.method - INFO - Running protocol to classify the ions (m/z) by the quality of molecular formulae annotations, and the spatial distributions
+2026-05-31 01:40:51,193 - smpath.method - INFO - >> Part a: classifying the ions with thresholds: MSM >= 0.0, offSample <= 0.85, FDR <= 0.5
+2026-05-31 01:40:51,193 - smpath.data - INFO - gets quality of the annotations (per ion and formula)
+2026-05-31 01:40:51,197 - smpath.method - INFO -   a total of 613 ions pass MSM, offSample and FDR cutoffs.
+2026-05-31 01:40:51,825 - smpath.method - INFO -   saved plot (MSM, offSample, FDR) to output/2_ablation_random_id/MALDI_260_T
+2026-05-31 01:40:51,826 - smpath.method - INFO - >> Part b: classifying ions based on Moran's I: thresholds: I >= 0.0,  (BH) adjusted p-value <= 1.0
+2026-05-31 01:40:51,826 - smpath.method - INFO -   metrics are only computed for the ions that passed the 'Part a'.
+2026-05-31 01:40:52,000 - smpath.processing.measures_methods - INFO - using the available .uns['moranI'] with dimension: (613, 12)
+2026-05-31 01:40:52,252 - smpath.method - INFO -   saved plot (autocorrelation) to output/2_ablation_random_id/MALDI_260_T
+2026-05-31 01:40:52,255 - smpath.method - INFO - A total of 613 ions exhibit good final quality (check column 'final_quality' of adata_mz.var)
+2026-05-31 01:40:52,564 - smpath.data - INFO - success, attributes : piled, sets_ids_df
+2026-05-31 01:40:52,693 - smpath.method - INFO - Pathways and Annotations objects synchronized, with min set size = 2
+2026-05-31 01:40:52,699 - smpath.method - INFO - 
+ Will compute spot-wise Pathways Scores with the following config: class_type: method
+description: parameters to compute the pathways scores
+method: sspa_kpca
+min_entity: 2
+n_groups_of_spots: 30
+threshold_n_spots_is_high: 15000
+type_abbr: FAMILIES
+
+2026-05-31 01:40:52,699 - smpath.method - INFO -  using sspa library, credits: Wieder C et al., 2022

@@ -1,0 +1,31 @@
+2026-05-30 19:09:58,731 - smpath.data - INFO - Loading annotations for dataset: 'example-corn-root'
+2026-05-30 19:09:58,829 - smpath.data - INFO -  success, annotations loaded (attr `.no_translated`)
+2026-05-30 19:09:58,933 - smpath.method - INFO - Intensities already normalised, check .uns['norm'] and .layers['raw_X']
+2026-05-30 19:09:58,934 - smpath.method - INFO - Running protocol to classify the ions (m/z) by the quality of molecular formulae annotations, and the spatial distributions
+2026-05-30 19:09:58,934 - smpath.method - INFO - >> Part a: classifying the ions with thresholds: MSM >= 0.0, offSample <= 0.85, FDR <= 0.5
+2026-05-30 19:09:58,934 - smpath.data - INFO - gets quality of the annotations (per ion and formula)
+2026-05-30 19:09:58,940 - smpath.method - INFO -   a total of 347 ions pass MSM, offSample and FDR cutoffs.
+2026-05-30 19:10:00,534 - smpath.method - INFO -   saved plot (MSM, offSample, FDR) to output/2_ablation_random_id/example-corn-root
+2026-05-30 19:10:00,534 - smpath.method - INFO - >> Part b: classifying ions based on Moran's I: thresholds: I >= 0.0,  (BH) adjusted p-value <= 1.0
+2026-05-30 19:10:00,534 - smpath.method - INFO -   metrics are only computed for the ions that passed the 'Part a'.
+2026-05-30 19:10:00,600 - smpath.processing.measures_methods - INFO - computing spatial neighbors, with n_neighs: 20
+2026-05-30 19:10:00,679 - smpath.processing.measures_methods - INFO - Computing Moran's I autocorrelation on data with shape (obs,vars) (4686, 347)
+2026-05-30 19:10:10,680 - smpath.method - INFO -   saved plot (autocorrelation) to output/2_ablation_random_id/example-corn-root
+2026-05-30 19:10:10,687 - smpath.method - INFO - A total of 341 ions exhibit good final quality (check column 'final_quality' of adata_mz.var)
+2026-05-30 19:10:10,990 - smpath.data - INFO - Loading reference tables of KEGG identifiers
+2026-05-30 19:10:10,991 - smpath.data - INFO -  loading CoreMetabolome
+2026-05-30 19:10:11,013 - smpath.data - INFO -  loading HMDB
+2026-05-30 19:10:11,033 - smpath.data - INFO -  loading LipidMaps
+2026-05-30 19:10:11,052 - smpath.data - INFO - Translating ids in the metabolome annotation table, to KEGG (into .df attribute)
+2026-05-30 19:10:11,073 - smpath.data - WARNING - Identified cases where one compound ID maps to multiple m/z: Please run '<metabo_annotations>.keep_best_mz_id_pairs(anndata_mz)'.
+2026-05-30 19:10:11,074 - smpath.data - INFO - Resolving 'multiple m/z' that map to 'one compound id':
+  keeps the two top better (m/z, id) pairs by quality criteria.
+2026-05-30 19:10:11,074 - smpath.data - INFO -     Moran's 'I' in var_df will be also used.
+2026-05-30 19:10:11,439 - smpath.data - INFO - collapsing metabolites' identifiers aliases
+2026-05-30 19:10:11,440 - smpath.data - INFO - all is KEGG ids, no alias
+2026-05-30 19:10:11,449 - smpath.data - WARNING - Identified cases where one compound ID maps to multiple m/z: Please run '<metabo_annotations>.keep_best_mz_id_pairs(anndata_mz)'.
+2026-05-30 19:10:11,449 - smpath.data - INFO - Resolving 'multiple m/z' that map to 'one compound id':
+  keeps the two top better (m/z, id) pairs by quality criteria.
+2026-05-30 19:10:11,449 - smpath.data - INFO -     Moran's 'I' in var_df will be also used.
+2026-05-30 19:10:12,938 - smpath.data - INFO - collapsing metabolites' identifiers aliases
+2026-05-30 19:10:13,709 - SpacePath.api - INFO - saved annotations tables after processing

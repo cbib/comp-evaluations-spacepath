@@ -1,0 +1,63 @@
+2026-05-31 02:27:06,241 - SpacePath.src.orchestrator - INFO - 
+Running sample: Kidney-xenogr-2
+2026-05-31 02:27:06,241 - smpath.data - INFO - Loading annotations for dataset: 'Kidney-xenogr-2'
+2026-05-31 02:27:06,377 - smpath.data - INFO -  success, annotations loaded (attr `.no_translated`)
+2026-05-31 02:27:06,479 - smpath.method - INFO - Intensities already normalised, check .uns['norm'] and .layers['raw_X']
+2026-05-31 02:27:06,479 - smpath.method - INFO - Running protocol to classify the ions (m/z) by the quality of molecular formulae annotations, and the spatial distributions
+2026-05-31 02:27:06,479 - smpath.method - INFO - >> Part a: classifying the ions with thresholds: MSM >= -1.1, offSample <= 1.1, FDR <= 1.1
+2026-05-31 02:27:06,480 - smpath.data - INFO - gets quality of the annotations (per ion and formula)
+2026-05-31 02:27:06,485 - smpath.method - INFO -   a total of 1069 ions pass MSM, offSample and FDR cutoffs.
+2026-05-31 02:27:07,099 - smpath.method - INFO -   saved plot (MSM, offSample, FDR) to output/1_ablation_nofilter/Kidney-xenogr-2
+2026-05-31 02:27:07,099 - smpath.method - INFO - >> Part b: classifying ions based on Moran's I: thresholds: I >= -1.1,  (BH) adjusted p-value <= 1.1
+2026-05-31 02:27:07,099 - smpath.method - INFO -   metrics are only computed for the ions that passed the 'Part a'.
+2026-05-31 02:27:07,148 - smpath.processing.measures_methods - INFO - computing spatial neighbors, with n_neighs: 20
+2026-05-31 02:27:07,202 - smpath.processing.measures_methods - INFO - Computing Moran's I autocorrelation on data with shape (obs,vars) (12667, 1069)
+2026-05-31 02:27:29,630 - smpath.method - INFO -   saved plot (autocorrelation) to output/1_ablation_nofilter/Kidney-xenogr-2
+2026-05-31 02:27:29,633 - smpath.method - INFO - A total of 1058 ions exhibit good final quality (check column 'final_quality' of adata_mz.var)
+2026-05-31 02:27:29,850 - smpath.data - INFO - Loading reference tables of KEGG identifiers
+2026-05-31 02:27:29,850 - smpath.data - INFO -  loading CoreMetabolome
+2026-05-31 02:27:29,860 - smpath.data - INFO -  loading LipidMaps
+2026-05-31 02:27:29,864 - smpath.data - INFO -  loading HMDB
+2026-05-31 02:27:29,879 - smpath.data - INFO - Translating ids in the metabolome annotation table, to KEGG (into .df attribute)
+2026-05-31 02:27:29,905 - smpath.data - WARNING - Identified cases where one compound ID maps to multiple m/z: Please run '<metabo_annotations>.keep_best_mz_id_pairs(anndata_mz)'.
+2026-05-31 02:27:29,905 - smpath.data - INFO - Resolving 'multiple m/z' that map to 'one compound id':
+  keeps the two top better (m/z, id) pairs by quality criteria.
+2026-05-31 02:27:29,905 - smpath.data - INFO -     Moran's 'I' in var_df will be also used.
+2026-05-31 02:27:30,350 - smpath.data - INFO - collapsing metabolites' identifiers aliases
+2026-05-31 02:27:30,350 - smpath.data - INFO - all is KEGG ids, no alias
+2026-05-31 02:27:30,360 - smpath.data - WARNING - Identified cases where one compound ID maps to multiple m/z: Please run '<metabo_annotations>.keep_best_mz_id_pairs(anndata_mz)'.
+2026-05-31 02:27:30,360 - smpath.data - INFO - Resolving 'multiple m/z' that map to 'one compound id':
+  keeps the two top better (m/z, id) pairs by quality criteria.
+2026-05-31 02:27:30,360 - smpath.data - INFO -     Moran's 'I' in var_df will be also used.
+2026-05-31 02:27:48,898 - smpath.data - INFO - collapsing metabolites' identifiers aliases
+2026-05-31 02:27:50,303 - SpacePath.api - INFO - saved annotations tables after processing
+2026-05-31 02:27:50,309 - SpacePath.api - INFO - computing clustering of spots with method: leiden_sg ; user parameter: 0.2
+2026-05-31 02:28:15,467 - SpacePath.api - INFO - computing differential ions between clusters
+2026-05-31 02:28:15,585 - SpacePath.api - INFO - computing the differential abundances of all the m/z features, cluster to cluster, for all clusters
+2026-05-31 02:28:16,085 - smpath.data - INFO - success, attributes : piled, sets_ids_df
+2026-05-31 02:28:16,112 - smpath.method - INFO - Pathways and Annotations objects synchronized, with min set size = 2
+2026-05-31 02:28:16,318 - smpath.method - INFO - 
+ Will compute spot-wise Pathways Scores with the following config: class_type: method
+description: parameters to compute the pathways scores
+method: sspa_kpca
+min_entity: 2
+n_groups_of_spots: 30
+threshold_n_spots_is_high: 15000
+type_abbr: KEGG
+
+2026-05-31 02:28:16,318 - smpath.method - INFO -  using sspa library, credits: Wieder C et al., 2022
+2026-05-31 02:29:41,661 - smpath.method - INFO - successfully computed scores for the specified sets (abbr type): KEGG
+2026-05-31 02:29:41,669 - SpacePath.api - INFO - success! scores for sample Kidney-xenogr-2 (set type KEGG) computed in seconds: 85.35073947906494
+2026-05-31 02:29:41,711 - SpacePath.api - INFO - scores saved to file output/1_ablation_nofilter/Kidney-xenogr-2/Kidney-xenogr-2-scores-KEGG.h5ad
+2026-05-31 02:29:42,129 - smpath.data - INFO - success, attributes : piled, sets_ids_df
+2026-05-31 02:29:42,192 - smpath.method - INFO - Pathways and Annotations objects synchronized, with min set size = 2
+2026-05-31 02:29:42,426 - smpath.method - INFO - 
+ Will compute spot-wise Pathways Scores with the following config: class_type: method
+description: parameters to compute the pathways scores
+method: sspa_kpca
+min_entity: 2
+n_groups_of_spots: 30
+threshold_n_spots_is_high: 15000
+type_abbr: WIKI
+
+2026-05-31 02:29:42,426 - smpath.method - INFO -  using sspa library, credits: Wieder C et al., 2022

@@ -1,0 +1,93 @@
+2026-05-31 01:12:18,184 - smpath.data - INFO - Loading annotations for dataset: 'MALDI_260_T'
+2026-05-31 01:12:18,261 - smpath.data - INFO -  success, annotations loaded (attr `.no_translated`)
+2026-05-31 01:12:18,634 - smpath.method - INFO - Intensities already normalised, check .uns['norm'] and .layers['raw_X']
+2026-05-31 01:12:18,634 - smpath.method - INFO - Running protocol to classify the ions (m/z) by the quality of molecular formulae annotations, and the spatial distributions
+2026-05-31 01:12:18,634 - smpath.method - INFO - >> Part a: classifying the ions with thresholds: MSM >= 0.0, offSample <= 0.85, FDR <= 0.5
+2026-05-31 01:12:18,635 - smpath.data - INFO - gets quality of the annotations (per ion and formula)
+2026-05-31 01:12:18,640 - smpath.method - INFO -   a total of 613 ions pass MSM, offSample and FDR cutoffs.
+2026-05-31 01:12:19,273 - smpath.method - INFO -   saved plot (MSM, offSample, FDR) to output/2_ablation_random_id/MALDI_260_T
+2026-05-31 01:12:19,273 - smpath.method - INFO - >> Part b: classifying ions based on Moran's I: thresholds: I >= 0.0,  (BH) adjusted p-value <= 1.0
+2026-05-31 01:12:19,273 - smpath.method - INFO -   metrics are only computed for the ions that passed the 'Part a'.
+2026-05-31 01:12:19,477 - smpath.processing.measures_methods - INFO - computing spatial neighbors, with n_neighs: 20
+2026-05-31 01:12:19,566 - smpath.processing.measures_methods - INFO - Computing Moran's I autocorrelation on data with shape (obs,vars) (17334, 613)
+2026-05-31 01:12:41,885 - smpath.method - INFO -   saved plot (autocorrelation) to output/2_ablation_random_id/MALDI_260_T
+2026-05-31 01:12:41,889 - smpath.method - INFO - A total of 613 ions exhibit good final quality (check column 'final_quality' of adata_mz.var)
+2026-05-31 01:12:42,460 - smpath.data - INFO - Loading reference tables of KEGG identifiers
+2026-05-31 01:12:42,460 - smpath.data - INFO -  loading CoreMetabolome
+2026-05-31 01:12:42,467 - smpath.data - INFO -  loading HMDB
+2026-05-31 01:12:42,473 - smpath.data - INFO -  loading LipidMaps
+2026-05-31 01:12:42,481 - smpath.data - INFO - Translating ids in the metabolome annotation table, to KEGG (into .df attribute)
+2026-05-31 01:12:42,495 - smpath.data - WARNING - Identified cases where one compound ID maps to multiple m/z: Please run '<metabo_annotations>.keep_best_mz_id_pairs(anndata_mz)'.
+2026-05-31 01:12:42,495 - smpath.data - INFO - Resolving 'multiple m/z' that map to 'one compound id':
+  keeps the two top better (m/z, id) pairs by quality criteria.
+2026-05-31 01:12:42,495 - smpath.data - INFO -     Moran's 'I' in var_df will be also used.
+2026-05-31 01:12:42,759 - smpath.data - INFO - collapsing metabolites' identifiers aliases
+2026-05-31 01:12:42,759 - smpath.data - INFO - all is KEGG ids, no alias
+2026-05-31 01:12:42,765 - smpath.data - INFO - Resolving 'multiple m/z' that map to 'one compound id':
+  keeps the two top better (m/z, id) pairs by quality criteria.
+2026-05-31 01:12:42,765 - smpath.data - INFO -     Moran's 'I' in var_df will be also used.
+2026-05-31 01:12:44,657 - smpath.data - INFO - collapsing metabolites' identifiers aliases
+2026-05-31 01:12:45,290 - SpacePath.api - INFO - saved annotations tables after processing
+2026-05-31 01:12:45,291 - SpacePath.api - INFO - computing clustering of spots with method: kmeans ; user parameter: 4
+2026-05-31 01:12:50,405 - SpacePath.api - INFO - computing differential ions between clusters
+2026-05-31 01:12:50,775 - SpacePath.api - INFO - computing the differential abundances of all the m/z features, cluster to cluster, for all clusters
+2026-05-31 01:12:51,842 - smpath.data - INFO - success, attributes : piled, sets_ids_df
+2026-05-31 01:12:51,962 - smpath.method - INFO - Pathways and Annotations objects synchronized, with min set size = 2
+2026-05-31 01:12:52,000 - smpath.method - INFO - 
+ Will compute spot-wise Pathways Scores with the following config: class_type: method
+description: parameters to compute the pathways scores
+method: sspa_kpca
+min_entity: 2
+n_groups_of_spots: 30
+threshold_n_spots_is_high: 15000
+type_abbr: KEGG
+
+2026-05-31 01:12:52,001 - smpath.method - INFO -  using sspa library, credits: Wieder C et al., 2022
+2026-05-31 01:13:30,019 - smpath.method - INFO - successfully computed scores for the specified sets (abbr type): KEGG
+2026-05-31 01:13:30,653 - smpath.data - INFO - success, attributes : piled, sets_ids_df
+2026-05-31 01:13:32,405 - smpath.method - INFO - Pathways and Annotations objects synchronized, with min set size = 2
+2026-05-31 01:13:32,441 - smpath.method - INFO - 
+ Will compute spot-wise Pathways Scores with the following config: class_type: method
+description: parameters to compute the pathways scores
+method: sspa_kpca
+min_entity: 2
+n_groups_of_spots: 30
+threshold_n_spots_is_high: 15000
+type_abbr: WIKI
+
+2026-05-31 01:13:32,442 - smpath.method - INFO -  using sspa library, credits: Wieder C et al., 2022
+2026-05-31 01:14:17,317 - smpath.method - INFO - successfully computed scores for the specified sets (abbr type): WIKI
+2026-05-31 01:14:20,010 - smpath.method - INFO - computing similarity matrix with config class_type: method
+description: compute similarity matrix of compounds
+method: TanimotoSimilarity
+smiles_files:
+  HMDB: HMDB-SMILES_05-07-24.tsv
+  LipidMaps: LipidMaps-SMILES_06-08-25.tsv
+threshold_similarity: null
+
+2026-05-31 01:14:20,769 - smpath.method - INFO - computing similarities for all pairs of SMILES
+2026-05-31 01:14:20,782 - smpath.method - INFO - computing families of molecules, with config class_type: method
+cutoff_tree: 0.4
+description: compute and save families file, from a distance-transformed similarity
+  matrix
+method: HierarchicalClustering
+method_linkage: ward
+metric_linkage: cosine
+
+2026-05-31 01:14:20,784 - smpath.method - INFO - the clusters are: [1, 2]
+2026-05-31 01:14:20,784 - smpath.method - INFO - number of used compound identifiers: 2
+2026-05-31 01:14:20,784 - smpath.method - INFO - representing distinct mzs: 2
+2026-05-31 01:14:20,786 - smpath.method - INFO - saved .mmt file to output/2_ablation_random_id MALDI_260_T
+2026-05-31 01:14:21,675 - smpath.method - INFO - saved figure to output/2_ablation_random_id/MALDI_260_T
+2026-05-31 01:14:21,685 - smpath.data - INFO - success, attributes : piled, sets_ids_df
+2026-05-31 01:14:22,012 - smpath.method - INFO - Pathways and Annotations objects synchronized, with min set size = 2
+2026-05-31 01:14:22,034 - smpath.method - INFO - 
+ Will compute spot-wise Pathways Scores with the following config: class_type: method
+description: parameters to compute the pathways scores
+method: sspa_kpca
+min_entity: 2
+n_groups_of_spots: 30
+threshold_n_spots_is_high: 15000
+type_abbr: FAMILIES
+
+2026-05-31 01:14:22,035 - smpath.method - INFO -  using sspa library, credits: Wieder C et al., 2022

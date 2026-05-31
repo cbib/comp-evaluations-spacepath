@@ -1,0 +1,14 @@
+2026-05-30 18:25:22,085 - SpacePath.src.orchestrator - INFO - 
+Running sample: Brain-center-rat
+2026-05-30 18:25:22,085 - smpath.data - INFO - Loading annotations for dataset: 'Brain-center-rat'
+2026-05-30 18:25:22,379 - smpath.data - INFO -  success, annotations loaded (attr `.no_translated`)
+2026-05-30 18:25:22,570 - smpath.method - INFO - Intensities already normalised, check .uns['norm'] and .layers['raw_X']
+2026-05-30 18:25:22,571 - smpath.method - INFO - Running protocol to classify the ions (m/z) by the quality of molecular formulae annotations, and the spatial distributions
+2026-05-30 18:25:22,571 - smpath.method - INFO - >> Part a: classifying the ions with thresholds: MSM >= -1.1, offSample <= 1.1, FDR <= 1.1
+2026-05-30 18:25:22,571 - smpath.data - INFO - gets quality of the annotations (per ion and formula)
+2026-05-30 18:25:22,577 - smpath.method - INFO -   a total of 2013 ions pass MSM, offSample and FDR cutoffs.
+2026-05-30 18:25:23,349 - smpath.method - INFO -   saved plot (MSM, offSample, FDR) to output/0_baseline/Brain-center-rat
+2026-05-30 18:25:23,349 - smpath.method - INFO - >> Part b: classifying ions based on Moran's I: thresholds: I >= -1.1,  (BH) adjusted p-value <= 1.1
+2026-05-30 18:25:23,349 - smpath.method - INFO -   metrics are only computed for the ions that passed the 'Part a'.
+2026-05-30 18:25:23,424 - smpath.processing.measures_methods - INFO - computing spatial neighbors, with n_neighs: 20
+2026-05-30 18:25:23,454 - smpath.processing.measures_methods - INFO - Computing Moran's I autocorrelation on data with shape (obs,vars) (7034, 2013)

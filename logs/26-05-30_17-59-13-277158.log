@@ -1,0 +1,110 @@
+2026-05-30 17:59:18,921 - SpacePath.src.orchestrator - INFO - 
+Running sample: example-corn-root
+2026-05-30 17:59:18,921 - smpath.data - INFO - Loading annotations for dataset: 'example-corn-root'
+2026-05-30 17:59:18,971 - smpath.data - INFO -  success, annotations loaded (attr `.no_translated`)
+2026-05-30 17:59:19,021 - smpath.method - INFO - Intensities already normalised, check .uns['norm'] and .layers['raw_X']
+2026-05-30 17:59:19,021 - smpath.method - INFO - Running protocol to classify the ions (m/z) by the quality of molecular formulae annotations, and the spatial distributions
+2026-05-30 17:59:19,021 - smpath.method - INFO - >> Part a: classifying the ions with thresholds: MSM >= 0.0, offSample <= 0.85, FDR <= 0.5
+2026-05-30 17:59:19,021 - smpath.data - INFO - gets quality of the annotations (per ion and formula)
+2026-05-30 17:59:19,024 - smpath.method - INFO -   a total of 347 ions pass MSM, offSample and FDR cutoffs.
+2026-05-30 17:59:19,627 - smpath.method - INFO -   saved plot (MSM, offSample, FDR) to output/0_baseline/example-corn-root
+2026-05-30 17:59:19,627 - smpath.method - INFO - >> Part b: classifying ions based on Moran's I: thresholds: I >= 0.0,  (BH) adjusted p-value <= 1.0
+2026-05-30 17:59:19,627 - smpath.method - INFO -   metrics are only computed for the ions that passed the 'Part a'.
+2026-05-30 17:59:19,644 - smpath.processing.measures_methods - INFO - computing spatial neighbors, with n_neighs: 20
+2026-05-30 17:59:19,666 - smpath.processing.measures_methods - INFO - Computing Moran's I autocorrelation on data with shape (obs,vars) (4686, 347)
+2026-05-30 17:59:22,829 - smpath.method - INFO -   saved plot (autocorrelation) to output/0_baseline/example-corn-root
+2026-05-30 17:59:22,831 - smpath.method - INFO - A total of 341 ions exhibit good final quality (check column 'final_quality' of adata_mz.var)
+2026-05-30 17:59:22,935 - smpath.data - INFO - Loading reference tables of KEGG identifiers
+2026-05-30 17:59:22,935 - smpath.data - INFO -  loading LipidMaps
+2026-05-30 17:59:22,939 - smpath.data - INFO -  loading CoreMetabolome
+2026-05-30 17:59:22,946 - smpath.data - INFO -  loading HMDB
+2026-05-30 17:59:22,957 - smpath.data - INFO - Translating ids in the metabolome annotation table, to KEGG (into .df attribute)
+2026-05-30 17:59:22,966 - smpath.data - WARNING - Identified cases where one compound ID maps to multiple m/z: Please run '<metabo_annotations>.keep_best_mz_id_pairs(anndata_mz)'.
+2026-05-30 17:59:22,967 - smpath.data - INFO - Resolving 'multiple m/z' that map to 'one compound id':
+  keeps the two top better (m/z, id) pairs by quality criteria.
+2026-05-30 17:59:22,967 - smpath.data - INFO -     Moran's 'I' in var_df will be also used.
+2026-05-30 17:59:23,149 - smpath.data - INFO - collapsing metabolites' identifiers aliases
+2026-05-30 17:59:23,149 - smpath.data - INFO - all is KEGG ids, no alias
+2026-05-30 17:59:23,154 - smpath.data - WARNING - Identified cases where one compound ID maps to multiple m/z: Please run '<metabo_annotations>.keep_best_mz_id_pairs(anndata_mz)'.
+2026-05-30 17:59:23,154 - smpath.data - INFO - Resolving 'multiple m/z' that map to 'one compound id':
+  keeps the two top better (m/z, id) pairs by quality criteria.
+2026-05-30 17:59:23,154 - smpath.data - INFO -     Moran's 'I' in var_df will be also used.
+2026-05-30 17:59:23,822 - smpath.data - INFO - collapsing metabolites' identifiers aliases
+2026-05-30 17:59:24,192 - SpacePath.api - INFO - saved annotations tables after processing
+2026-05-30 17:59:24,192 - SpacePath.api - INFO - computing clustering of spots with method: kmeans ; user parameter: 4
+2026-05-30 17:59:25,402 - SpacePath.api - INFO - computing differential ions between clusters
+2026-05-30 17:59:25,462 - SpacePath.api - INFO - computing the differential abundances of all the m/z features, cluster to cluster, for all clusters
+2026-05-30 17:59:25,651 - smpath.data - INFO - success, attributes : piled, sets_ids_df
+2026-05-30 17:59:25,701 - smpath.method - INFO - Pathways and Annotations objects synchronized, with min set size = 2
+2026-05-30 17:59:26,237 - smpath.method - INFO - 
+ Will compute spot-wise Pathways Scores with the following config: class_type: method
+description: parameters to compute the pathways scores
+method: sspa_kpca
+min_entity: 2
+n_groups_of_spots: 30
+threshold_n_spots_is_high: 15000
+type_abbr: KEGG
+
+2026-05-30 17:59:26,237 - smpath.method - INFO -  using sspa library, credits: Wieder C et al., 2022
+2026-05-30 17:59:54,217 - smpath.method - INFO - successfully computed scores for the specified sets (abbr type): KEGG
+2026-05-30 17:59:54,223 - SpacePath.api - INFO - success! scores for sample example-corn-root (set type KEGG) computed in seconds: 27.992289066314697
+2026-05-30 17:59:54,244 - SpacePath.api - INFO - scores saved to file output/0_baseline/example-corn-root/example-corn-root-scores-KEGG.h5ad
+2026-05-30 17:59:54,599 - smpath.data - INFO - success, attributes : piled, sets_ids_df
+2026-05-30 17:59:54,685 - smpath.method - INFO - Pathways and Annotations objects synchronized, with min set size = 2
+2026-05-30 17:59:54,947 - smpath.method - INFO - 
+ Will compute spot-wise Pathways Scores with the following config: class_type: method
+description: parameters to compute the pathways scores
+method: sspa_kpca
+min_entity: 2
+n_groups_of_spots: 30
+threshold_n_spots_is_high: 15000
+type_abbr: WIKI
+
+2026-05-30 17:59:54,947 - smpath.method - INFO -  using sspa library, credits: Wieder C et al., 2022
+2026-05-30 18:00:25,051 - smpath.method - INFO - successfully computed scores for the specified sets (abbr type): WIKI
+2026-05-30 18:00:25,058 - SpacePath.api - INFO - success! scores for sample example-corn-root (set type WIKI) computed in seconds: 30.117216110229492
+2026-05-30 18:00:25,084 - SpacePath.api - INFO - scores saved to file output/0_baseline/example-corn-root/example-corn-root-scores-WIKI.h5ad
+2026-05-30 18:00:25,105 - smpath.method - INFO - computing similarity matrix with config class_type: method
+description: compute similarity matrix of compounds
+method: TanimotoSimilarity
+smiles_files:
+  HMDB: HMDB-SMILES_05-07-24.tsv
+  LipidMaps: LipidMaps-SMILES_06-08-25.tsv
+threshold_similarity: null
+
+2026-05-30 18:00:26,032 - smpath.method - INFO - computing similarities for all pairs of SMILES
+2026-05-30 18:00:26,073 - smpath.method - INFO - computing families of molecules, with config class_type: method
+cutoff_tree: 0.4
+description: compute and save families file, from a distance-transformed similarity
+  matrix
+method: HierarchicalClustering
+method_linkage: ward
+metric_linkage: cosine
+
+2026-05-30 18:00:26,076 - smpath.method - INFO - the clusters are: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83]
+2026-05-30 18:00:26,076 - smpath.method - INFO - number of used compound identifiers: 151
+2026-05-30 18:00:26,076 - smpath.method - INFO - representing distinct mzs: 44
+2026-05-30 18:00:26,109 - smpath.method - INFO - saved .mmt file to output/0_baseline/ example-corn-root
+2026-05-30 18:00:27,109 - smpath.method - INFO - saved figure to output/0_baseline/example-corn-root
+2026-05-30 18:00:27,134 - smpath.data - INFO - success, attributes : piled, sets_ids_df
+2026-05-30 18:00:27,226 - smpath.method - INFO - Pathways and Annotations objects synchronized, with min set size = 2
+2026-05-30 18:00:27,431 - smpath.method - INFO - 
+ Will compute spot-wise Pathways Scores with the following config: class_type: method
+description: parameters to compute the pathways scores
+method: sspa_kpca
+min_entity: 2
+n_groups_of_spots: 30
+threshold_n_spots_is_high: 15000
+type_abbr: FAMILIES
+
+2026-05-30 18:00:27,431 - smpath.method - INFO -  using sspa library, credits: Wieder C et al., 2022
+2026-05-30 18:00:36,745 - smpath.method - INFO - successfully computed scores for the specified sets (abbr type): FAMILIES
+2026-05-30 18:00:36,897 - smpath.processing.measures_methods - INFO - computing spatial neighbors, with n_neighs: 20
+2026-05-30 18:00:36,917 - smpath.processing.measures_methods - INFO - Computing Moran's I autocorrelation on data with shape (obs,vars) (4686, 122)
+2026-05-30 18:00:37,157 - SpacePath.api - INFO - SAMPLE: example-corn-root
+2026-05-30 18:00:37,157 - SpacePath.api - INFO -    differential KEGG pathways: 11
+2026-05-30 18:00:37,157 - SpacePath.api - INFO -    differential WIKIPATHWAYS: 8
+2026-05-30 18:00:37,157 - SpacePath.api - INFO -    differential Families: 11
+2026-05-30 18:00:37,157 - SpacePath.src.orchestrator - INFO - processed sample example-corn-root 
+
+
