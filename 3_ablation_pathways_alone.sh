@@ -17,10 +17,13 @@ for tiss in ${list_tissues[@]}; do
 
     mkdir -p "$OUT_DIR/${tiss}"
 
-    cp "${BL_DIR}/${tiss}/"*scores*.h5ad "${OUT_DIR}/$tiss/"
+    cp "${BL_DIR}/${tiss}/"*scores*WIKI*.h5ad "${OUT_DIR}/$tiss/"
+     cp "${BL_DIR}/${tiss}/"*scores*KEGG*.h5ad "${OUT_DIR}/$tiss/"
     cp "${BL_DIR}/${tiss}/"*differential-SETS.tsv "${OUT_DIR}/$tiss/"
     cp "${BL_DIR}/${tiss}/"*.mmt "${OUT_DIR}/${tiss}/"
     cp "${BL_DIR}/${tiss}/"*CleanAnnotations*.* "${OUT_DIR}/${tiss}/"
+    cp "${BL_DIR}/${tiss}/"*clusters*.txt "${OUT_DIR}/${tiss}/"
+
 done
 
 echo "OK"
