@@ -14,7 +14,11 @@ import SpacePath.src.helpers as s_helpers
 
 plt.rcParams.update({
     "font.family": "Arial",
-    "font.size": 8})
+    "font.size": 9})
+
+height_subplots = 28  # 38 if all
+width_subplots = 5  #
+dpi_png_plots = 220
 
 np.random.seed(42)
 
@@ -24,7 +28,8 @@ palette_set_type_pastel = {"ghost" : "#FDCDAC",   # pastel orange/coral
 
 
 def save_plot_metric_tissue_specific(df_piled: pd.DataFrame,
-                                     metric_to_plot="logfoldchanges", out_file=''):
+                                     metric_to_plot="logfoldchanges", out_file='',
+                                     sharey_bool=True):
     g = sns.catplot(
         data=df_piled,
         x="eval_type",
@@ -32,7 +37,7 @@ def save_plot_metric_tissue_specific(df_piled: pd.DataFrame,
         hue="set_type",
         row="dataset_name",
         kind="box",
-        sharey=True,
+        sharey=sharey_bool,
         height=1.5,
         aspect=2.5,
         palette=palette_set_type_pastel
@@ -65,11 +70,11 @@ def save_plot_metric_tissue_specific(df_piled: pd.DataFrame,
                 zorder=0
             )
 
-    g.figure.set_size_inches(4, 30)  # width=8", height=10"
+    g.figure.set_size_inches(w=width_subplots, h=height_subplots)  # width=8", height=10"
     if out_file != '':
         g.figure.savefig(
             out_file,
-            dpi=150,
+            dpi=dpi_png_plots,
             bbox_inches="tight"
         )
     else:
@@ -93,7 +98,7 @@ def save_plot_metric_global(df_piled: pd.DataFrame,
     if out_file != '':
         plt.savefig(
             out_file,
-            dpi=150,
+            dpi=dpi_png_plots,
             bbox_inches="tight"
         )
     else:
@@ -120,9 +125,18 @@ out_dir ="../../output"
 #tissues = ["Brain-center-rat", "Stomach-rat"]
 mok = pd.read_csv("../../config/no_filter.tsv", sep="\t", index_col=None, header=0)
 
-mok = mok.sample(12).copy()
-
+#mok = mok.sample(12).copy()
 tissues = mok['dataset_name'].unique().tolist()
+
+only_selection = True  # TODO: mark as important
+if only_selection:
+    tissues = ['Brain-center-rat','Brain-trv-mouse','Kidney-xenogr-2',
+               'Lung-mouse', 'Liver-brca-mouse', 'Bladder-cancer-hum',
+               'UBcalibr4',  'UBcalibr1', 'Brain-healthy-mouse',
+               'Brain-demyel-mouse', 'Stomach-rat']
+
+ # only a selection for showing in slides
+
 #tissues = ['MALDI_260_T',  'MALDI_262_T', 'MALDI_269_T']
 ablations_out_dirs = {'baseline': '0_baseline',
                       'no filter': '1_ablation_nofilter',
@@ -202,11 +216,8 @@ df_ambig_propag_score = pd.concat(dfs_metric_new, ignore_index=True)
 
 df_piled = categorize_specific_columns(df_piled, tissues)
 print( df_piled.columns)
-# df_piled = df_piled.assign(set_type=pd.Categorical(df_piled['set_type'].tolist(),
-#                                            categories=['ghost', 'pathway']))
-# df_ambig_propag_score = df_ambig_propag_score.assign(
-#     set_type=pd.Categorical(df_ambig_propag_score['set_type'].tolist(),
-#     categories=['ghost', 'pathway']))
+
+
 df_ambig_propag_score = categorize_specific_columns(df_ambig_propag_score, tissues)
 
 # ------ plot metric 1
@@ -237,7 +248,7 @@ save_plot_metric_global(df_ambig_propag_score,
                         out_file="metric3-mix.png")
 save_plot_metric_tissue_specific(df_ambig_propag_score,
                                  metric_to_plot="ambig_propag_score",
-                                out_file="metric3.png")
+                                out_file="metric3.png", sharey_bool=False)
 
 
 #  --- number of significant sets (ghost and pathways)
@@ -272,7 +283,7 @@ def save_n_sets(df: pd.DataFrame, metric_to_plot='n_sets',
         gap=0.89,
         row="dataset_name",
         kind="bar",
-        sharey=True,
+        sharey=False,
         height=1.5,
         aspect=2.5,
         width=0.8,
@@ -306,7 +317,7 @@ def save_n_sets(df: pd.DataFrame, metric_to_plot='n_sets',
                 zorder=0
             )
 
-    g.figure.set_size_inches(4, 35)  # width=8", height=10"
+    g.figure.set_size_inches(w=width_subplots, h=height_subplots)  # width=8", height=10"
     if out_file != '':
         g.figure.savefig(
             out_file,
@@ -319,3 +330,5 @@ def save_n_sets(df: pd.DataFrame, metric_to_plot='n_sets',
 save_n_sets(cool, metric_to_plot='n_sets', out_file='numbers_sets_significant.pdf')
 
 
+### end
+ # not in slides : [ 'Brain-sgt-rat', 'Brain-trv-rat', 'Heart-aorta-mouse', , 'Eye-mouse', 'MALDI_260_T', 'MALDI_262_T', 'MALDI_269_T',  'Ovary-ca-mouse', 'Cerebellum-mouse',  'Kidney-mouse',  'Gut-mouse']
