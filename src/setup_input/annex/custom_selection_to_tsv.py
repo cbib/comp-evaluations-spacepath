@@ -37,6 +37,6 @@ include_df = f4.loc[~f4["dataset_name"].isin(all_omit), :]
 
 include_df.to_csv(os.path.join(params_dir, 'baseline.tsv'),
                             sep='\t', header=True, index=False)
-omit_df.to_csv(os.path.join(params_dir, 'for_later.tsv'),
-                            sep='\t', header=True, index=False)
+# omit_df.to_csv(os.path.join(params_dir, 'for_later.tsv'),    # no needed anymore
+#                             sep='\t', header=True, index=False)
 

@@ -21,76 +21,6 @@ pathways_files_location_info = {
                           'id_type': 'moleculeIds'}}
 
 
-##
-
-def compute_diff_analysis_for_sets(
-        pathways_types: List[str],
-        clustering_parameters: Dict[str, str | int | float],
-        SAMPLE: str, subfolder: str, data_centralized_folder: str,
-       ) -> None:  # before: n_top_per_cluster 25
-    if not "FAMILIES" in pathways_types:
-        pathways_types.append("FAMILIES")
-    str_out = f"{clustering_parameters['choice']}-{clustering_parameters['numeric_parameter']}"
-
-    scores_merged = s_helpers.join_scores_adatas(pathways_types, SAMPLE, subfolder,
-                                       data_centralized_folder)
-
-    clusters_df = pd.read_csv(os.path.join(data_centralized_folder, subfolder,
-                                           f'{SAMPLE}-clusters-{str_out}.txt'),
-                              header=0)
-
-    scores_merged =  s_helpers.safe_insert_clusters_column(scores_merged,
-                                                clusters_df,
-                                                str_out)
-    #  shift to avoid negative values
-    scores_merged.X = csr_matrix(
-        scores_merged.X.todense() + abs(scores_merged.X.min().min()))
-
-    diff_df = s_helpers.squidpy_differential_analysis(
-        scores_merged, group_str=str_out)
-
-    # Moran : compute for the sets
-    scores_merged = measures_methods.compute_moran_i(scores_merged)
-    scores_merged.var['I'] = scores_merged.uns['moranI'].loc[
-        scores_merged.var.index.tolist(), 'I'].astype(float).tolist()
-
-    diff_df = pd.merge(
-        diff_df,
-        scores_merged.var[['pathway_id', 'pathway_name', 'I']].copy(),
-        how='left', left_on="names", right_on="pathway_id")
-
-    diff_df.to_csv(os.path.join(data_centralized_folder, subfolder,
-                                         f'{SAMPLE}-diff-results-SETS.tsv'),
-                            sep='\t', header=True, index=False)
-##
-
-
-def random_adapt_half_per_mz_selector(annots_df, usable_id):
-    """
-    yields an annotations df with a half of the IDs (per m/z),
-    randomly selected whenever it is possible
-
-    """
-    ius_list = []
-    annots_df = annots_df.assign(
-        ius=annots_df['mz'].astype(str) + "ww" + annots_df[usable_id])
-    mzs_list = list(set(annots_df['mz'].astype(str).tolist()))
-    for imz in mzs_list:
-        here_ids_list = annots_df.loc[annots_df['mz'].astype(str) == imz,
-        usable_id].unique().tolist()
-
-        local_size = int(len(here_ids_list) / 2) if len(
-            here_ids_list) >= 2 else 1
-        tmps = np.random.choice(here_ids_list,
-                                size=local_size, replace=False)
-        for j in tmps:
-            ius_list.append(f'{imz}ww{j}')
-
-    annots_df = annots_df.loc[annots_df['ius'].astype(str).isin(ius_list),:].copy()
-    annots_df = annots_df.drop(columns=['ius'])
-
-    return annots_df
-
 
 def random_id_per_mz_selector(annots_df, usable_id):
     ius_list = []
@@ -113,16 +43,6 @@ def random_id_per_mz_selector(annots_df, usable_id):
     annots_df = annots_df.drop(columns=['ius'])
 
     return annots_df
-
-
-def ids_in_good_order(current_mzs, annots_df, usable_id):
-    annots_df = annots_df.drop_duplicates(subset=['mz', usable_id])
-    annots_df.index = annots_df['mz'].astype(str).tolist()
-    tmp = annots_df.T
-    ids_list_ordered = tmp.loc[usable_id, current_mzs].tolist()
-    ko = 00
-
-    return ids_list_ordered
 
 
 def compute_pathway_scores_random_id(pathways_types,
@@ -158,11 +78,7 @@ def compute_pathway_scores_random_id(pathways_types,
             usable_id=pathways_files_location_info[pw_type]['id_type'],
             min_set_size=min_pathway_size)
 
-        #   -- ablation : no weights --
-        # metabolites_computed_df, coords = spm.ComputeAssignmentsWeights.run(
-        #     adata_mz, annots_df,
-        #     usable_id=pathways_files_location_info[pw_type]['id_type'])
-
+        #  -- ablation : no weights, so skips the use of spm.ComputeAssignmentsWeights.run(...)
         coords = adata_mz.obsm['spatial']
 
         metabolites_computed_df = adata_mz[:, annots_df['mz'].astype(str).tolist()].to_df()

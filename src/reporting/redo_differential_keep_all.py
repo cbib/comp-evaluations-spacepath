@@ -4,17 +4,14 @@ from SpacePath import api as sap
 from SpacePath.src.orchestrator import DatasetsProcessor as DP
 import numpy as np
 import pandas as pd
-import subprocess
-import seaborn as sns
-import matplotlib.pyplot as plt
-from ambiguity_propag_score import (compute_ambig_propag_across_families,
-                                    compute_differential_keep_all)
+from ambiguity_propag_score import compute_differential_keep_all
 import SpacePath.src.helpers as s_helpers
 
+"""
+Run this script in the first time to generate the "extended-differential-SETS.tsv"
+files per dataset, as we require unfiltered differential results
+"""
 
-plt.rcParams.update({
-    "font.family": "Arial",
-    "font.size": 8})
 
 np.random.seed(42)
 
@@ -26,8 +23,7 @@ tissues = mok['dataset_name'].unique().tolist()
 
 ablations_out_dirs = {'baseline': '0_baseline',
                       'no filter': '1_ablation_nofilter',
-                      'random id': '2_ablation_random_id',
-                      'pathways only': '3_ablation_pathways_alone'}
+                      'random id': '2_ablation_random_id'}
 
 dfs_metrics_I_lfc = list()
 dfs_metric_new = list()

@@ -72,7 +72,7 @@ if not initialized_files_and_folders:
     #  c) now distribute all these clear inputs to the output to "intialize"
     for tissue in params_f['dataset_name'].tolist():
         for out_subdir in ['0_baseline', '1_ablation_nofilter',
-                           '2_ablation_random_id', '3_ablation_pathways_alone']:
+                           '2_ablation_random_id']:
             if not os.path.exists(os.path.join(output_dir, out_subdir, tissue)):
                 os.makedirs(os.path.join(output_dir, out_subdir, tissue))
             # fi
@@ -82,7 +82,7 @@ if not initialized_files_and_folders:
 
     # d) add the metabolites mappings to each parent folder
     for out_subdir in ['0_baseline', '1_ablation_nofilter',
-                           '2_ablation_random_id', '3_ablation_pathways_alone']:
+                           '2_ablation_random_id']:
         os.system(
             f"cp -r {orig_data}metabolites-mappings/ {output_dir}{out_subdir}/")
 

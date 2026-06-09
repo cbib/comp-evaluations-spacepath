@@ -11,13 +11,15 @@ from ambiguity_propag_score import (compute_ambig_propag_across_families,
                                     compute_differential_keep_all)
 import SpacePath.src.helpers as s_helpers
 
-
+"""
+Run after redo_differential_keep_all.py
+"""
 plt.rcParams.update({
     "font.family": "Arial",
     "font.size": 9})
 
 height_subplots = 28  # 38 if all
-width_subplots = 5  #
+width_subplots = 4  #
 dpi_png_plots = 220
 
 np.random.seed(42)
@@ -29,7 +31,7 @@ palette_set_type_pastel = {"ghost" : "#FDCDAC",   # pastel orange/coral
 
 def save_plot_metric_tissue_specific(df_piled: pd.DataFrame,
                                      metric_to_plot="logfoldchanges", out_file='',
-                                     sharey_bool=True):
+                                     sharey_bool=True, dodge_bool=True):
     g = sns.catplot(
         data=df_piled,
         x="eval_type",
@@ -38,6 +40,7 @@ def save_plot_metric_tissue_specific(df_piled: pd.DataFrame,
         row="dataset_name",
         kind="box",
         sharey=sharey_bool,
+        sharex=True,
         height=1.5,
         aspect=2.5,
         palette=palette_set_type_pastel
@@ -49,7 +52,7 @@ def save_plot_metric_tissue_specific(df_piled: pd.DataFrame,
             x="eval_type",
             y=metric_to_plot,
             hue="set_type",
-            dodge=True,
+            dodge=dodge_bool,  # stripplot: ambiguity score only has 1 class
             size=1.5,
             palette=palette_set_type_dark,
             ax=ax
@@ -109,7 +112,7 @@ def categorize_specific_columns(df, datasetlist):
     df = df.assign(
         eval_type=pd.Categorical(
             df['eval_type'].tolist(),
-            categories=['baseline', 'no filter', 'random id', 'pathways only']))
+            categories=['baseline', 'no filter', 'random id']))
     df = df.assign(
         set_type=pd.Categorical(df['set_type'].tolist(),
                                 categories=['ghost', 'pathway']))
@@ -140,8 +143,8 @@ if only_selection:
 #tissues = ['MALDI_260_T',  'MALDI_262_T', 'MALDI_269_T']
 ablations_out_dirs = {'baseline': '0_baseline',
                       'no filter': '1_ablation_nofilter',
-                      'random id': '2_ablation_random_id',
-                      'pathways only': '3_ablation_pathways_alone'}
+                      'random id': '2_ablation_random_id'
+                      }
 
 dfs_metrics_I_lfc = list()
 dfs_metric_new = list()
@@ -172,42 +175,40 @@ for tissue in tissues:
                             else 'pathway' for x in
                             df_sets_res['pathway_id'].tolist()]
 
-        if ablation_dir == '3_ablation_pathways_alone':
-            df_sets_res = df_sets_res.loc[
-                df_sets_res['set_type'] == 'pathway',:].copy()
+        # if ablation_dir == '3_ablation_pathways_alone':
+        #     df_sets_res = df_sets_res.loc[
+        #         df_sets_res['set_type'] == 'pathway',:].copy()
 
         df_sets_res['dataset_name'] = tissue
         dfs_metrics_I_lfc.append(df_sets_res)
         del df_sets_res
 
         # * ambiguity propagation score exclusively for families
-        if ablation_dir != '3_ablation_pathways_alone':
-            try:
-                df_aps= compute_ambig_propag_across_families(
-                     tissue,
-                    subfolder=os.path.join(ablation_dir, tissue),
-                    data_centralized_folder=out_dir)
-            except Exception as e:
-                print(e, "\n » impossible ghost scores, adding NaN df")
-                df_aps = pd.DataFrame({'pathway_id': ['MolFamImpossible'],
-                                   'ambig_propag_score' : [0],
-                                   'eval_type': [ablation_type],
-                                   'set_type': ['ghost'],
-                                   'dataset_name': [tissue] })
-
-
+        #if ablation_dir != '3_ablation_pathways_alone':
+        try:
+            df_aps= compute_ambig_propag_across_families(
+                 tissue,
+                subfolder=os.path.join(ablation_dir, tissue),
+                data_centralized_folder=out_dir)
             df_aps['eval_type'] = ablation_type
             df_aps['set_type'] = "ghost"
             df_aps['dataset_name'] = tissue
+        except Exception as e:
+            print(e, "\n » impossible ghost scores, adding nan")
+            df_aps = pd.DataFrame({'pathway_id': ['MolFamImpossible'],
+                               'ambig_propag_score' : [np.nan],
+                               'eval_type': [ablation_type],
+                               'set_type': ['ghost'],
+                               'dataset_name': [tissue] })
 
-            # add a fake pathway for consistent plot aesthetics
-            foo = pd.concat([df_aps, pd.DataFrame({'pathway_id': ['WPZ'],
-                                   'ambig_propag_score' : [np.nan],
-                                   'eval_type': [ablation_type],
-                                   'set_type': ['pathway'],
-                                   'dataset_name': [tissue] })],
-                ignore_index=True )
-            dfs_metric_new.append(foo)
+        # # add a fake pathway for consistent plot aesthetics
+        df_aps = pd.concat([df_aps, pd.DataFrame({'pathway_id': ['WPZ'],
+                               'ambig_propag_score' : [np.nan],
+                              'eval_type': [ablation_type],
+                               'set_type': ['pathway'],
+                               'dataset_name': [tissue] })],
+            ignore_index=True )
+        dfs_metric_new.append(df_aps)
 
 
 df_piled = pd.concat(dfs_metrics_I_lfc, ignore_index=True)
@@ -222,8 +223,8 @@ df_ambig_propag_score = categorize_specific_columns(df_ambig_propag_score, tissu
 
 # ------ plot metric 1
 
-save_plot_metric_global(df_piled,  metric_to_plot="logfoldchanges",
-                        out_file="metric1-mix.png")
+# save_plot_metric_global(df_piled,  metric_to_plot="logfoldchanges",
+#                         out_file="metric1-mix.png")
 save_plot_metric_tissue_specific(df_piled, metric_to_plot="logfoldchanges",
                                  out_file="metric1.png")
 #
@@ -234,8 +235,8 @@ df_I_piled = df_I_piled.drop(columns=['clus_set', 'logfoldchanges', 'pvals', 'pv
 df_I_piled = df_I_piled.drop_duplicates()
 df_I_piled = df_I_piled.sort_values(by=[ 'eval_type' ,'set_type', 'pathway_id'], ascending=[True, True,True])
 
-save_plot_metric_global(df_I_piled,  metric_to_plot="I",
-                         out_file="metric2-mix.png")
+# save_plot_metric_global(df_I_piled,  metric_to_plot="I",
+#                          out_file="metric2-mix.png")
 
 save_plot_metric_tissue_specific(df_I_piled, metric_to_plot="I",
                                  out_file="metric2.png")
@@ -243,12 +244,13 @@ save_plot_metric_tissue_specific(df_I_piled, metric_to_plot="I",
 
 # ------- plot metric 3
 
-save_plot_metric_global(df_ambig_propag_score,
-                        metric_to_plot="ambig_propag_score",
-                        out_file="metric3-mix.png")
+# save_plot_metric_global(df_ambig_propag_score,
+#                         metric_to_plot="ambig_propag_score",
+#                         out_file="metric3-mix.png")
 save_plot_metric_tissue_specific(df_ambig_propag_score,
                                  metric_to_plot="ambig_propag_score",
-                                out_file="metric3.png", sharey_bool=False)
+                                out_file="metric3.png",
+                                 sharey_bool=False)
 
 
 #  --- number of significant sets (ghost and pathways)
@@ -284,6 +286,7 @@ def save_n_sets(df: pd.DataFrame, metric_to_plot='n_sets',
         row="dataset_name",
         kind="bar",
         sharey=False,
+        sharex=True,
         height=1.5,
         aspect=2.5,
         width=0.8,
@@ -331,4 +334,4 @@ save_n_sets(cool, metric_to_plot='n_sets', out_file='numbers_sets_significant.pd
 
 
 ### end
- # not in slides : [ 'Brain-sgt-rat', 'Brain-trv-rat', 'Heart-aorta-mouse', , 'Eye-mouse', 'MALDI_260_T', 'MALDI_262_T', 'MALDI_269_T',  'Ovary-ca-mouse', 'Cerebellum-mouse',  'Kidney-mouse',  'Gut-mouse']
+ # not in slides : [ 'Brain-sgt-rat', 'Brain-trv-rat', 'Heart-aorta-mouse', 'Eye-mouse', 'MALDI_260_T', 'MALDI_262_T', 'MALDI_269_T',  'Ovary-ca-mouse', 'Cerebellum-mouse',  'Kidney-mouse',  'Gut-mouse']
