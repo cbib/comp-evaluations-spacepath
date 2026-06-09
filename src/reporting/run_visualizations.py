@@ -1,32 +1,29 @@
 import os
-import smpath.data as spd
-from SpacePath import api as sap
-from SpacePath.src.orchestrator import DatasetsProcessor as DP
 import numpy as np
 import pandas as pd
 import subprocess
 import seaborn as sns
 import matplotlib.pyplot as plt
-from ambiguity_propag_score import (compute_ambig_propag_across_families,
-                                    compute_differential_keep_all)
-import SpacePath.src.helpers as s_helpers
+from ambiguity_propag_score import compute_ambig_propag_across_families
+
+np.random.seed(42)
 
 """
 Run after redo_differential_keep_all.py
 """
+
+
 plt.rcParams.update({
     "font.family": "Arial",
     "font.size": 9})
 
-height_subplots = 28  # 38 if all
-width_subplots = 4  #
-dpi_png_plots = 220
-
-np.random.seed(42)
-
 palette_set_type_dark = {"ghost" : "#fc8d62",   "pathway" : "#66c2a5"}
 palette_set_type_pastel = {"ghost" : "#FDCDAC",   # pastel orange/coral
                            "pathway": "#B3E2CD"}  # pastel teal
+
+height_subplots = 38  # 38 if all  # 28 if selection
+width_subplots = 4  #
+dpi_png_plots = 220
 
 
 def save_plot_metric_tissue_specific(df_piled: pd.DataFrame,
@@ -131,16 +128,14 @@ mok = pd.read_csv("../../config/no_filter.tsv", sep="\t", index_col=None, header
 #mok = mok.sample(12).copy()
 tissues = mok['dataset_name'].unique().tolist()
 
-only_selection = True  # TODO: mark as important
+only_selection = False  # True only if small demo   (e.g. slides paste)
 if only_selection:
     tissues = ['Brain-center-rat','Brain-trv-mouse','Kidney-xenogr-2',
                'Lung-mouse', 'Liver-brca-mouse', 'Bladder-cancer-hum',
                'UBcalibr4',  'UBcalibr1', 'Brain-healthy-mouse',
                'Brain-demyel-mouse', 'Stomach-rat']
 
- # only a selection for showing in slides
 
-#tissues = ['MALDI_260_T',  'MALDI_262_T', 'MALDI_269_T']
 ablations_out_dirs = {'baseline': '0_baseline',
                       'no filter': '1_ablation_nofilter',
                       'random id': '2_ablation_random_id'
@@ -222,38 +217,26 @@ print( df_piled.columns)
 df_ambig_propag_score = categorize_specific_columns(df_ambig_propag_score, tissues)
 
 # ------ plot metric 1
-
-# save_plot_metric_global(df_piled,  metric_to_plot="logfoldchanges",
-#                         out_file="metric1-mix.png")
 save_plot_metric_tissue_specific(df_piled, metric_to_plot="logfoldchanges",
-                                 out_file="metric1.png")
-#
+                                 out_file="metric1.pdf")
+
 # ------ plot metric 2
 df_I_piled = df_piled.copy()
-#df_I_piled = df_I_piled.sort_values(by=[ 'eval_type' ,'set_type', 'pathway_id','clus_set'], ascending=[True, True, True,True])
 df_I_piled = df_I_piled.drop(columns=['clus_set', 'logfoldchanges', 'pvals', 'pvals_adj' ])
 df_I_piled = df_I_piled.drop_duplicates()
 df_I_piled = df_I_piled.sort_values(by=[ 'eval_type' ,'set_type', 'pathway_id'], ascending=[True, True,True])
 
-# save_plot_metric_global(df_I_piled,  metric_to_plot="I",
-#                          out_file="metric2-mix.png")
-
 save_plot_metric_tissue_specific(df_I_piled, metric_to_plot="I",
-                                 out_file="metric2.png")
+                                 out_file="metric2.pdf")
 
 
 # ------- plot metric 3
-
-# save_plot_metric_global(df_ambig_propag_score,
-#                         metric_to_plot="ambig_propag_score",
-#                         out_file="metric3-mix.png")
 save_plot_metric_tissue_specific(df_ambig_propag_score,
                                  metric_to_plot="ambig_propag_score",
-                                out_file="metric3.png",
+                                out_file="metric3.pdf",
                                  sharey_bool=False)
 
-
-#  --- number of significant sets (ghost and pathways)
+# ------- plot metric 4: number of significant sets (ghost and pathways)
 df_piled['abslfc'] = np.abs(df_piled['logfoldchanges'].to_numpy())
 # identical filter as  in SpacePath
 signif_sets = df_piled.loc[(df_piled['pvals_adj'].astype(float) <= 0.05) & (
@@ -270,8 +253,7 @@ cool.reset_index(inplace=True)
 cool[['dataset_name', 'set_type', 'eval_type']] = cool['cc_var'].str.split("|", expand=True)
 
 cool = categorize_specific_columns(cool, tissues)
-#cool = cool.assign(set_type=pd.Categorical(cool['set_type'].tolist(),
-#                                           categories=['ghost', 'pathway']))
+
 
 
 def save_n_sets(df: pd.DataFrame, metric_to_plot='n_sets',
@@ -334,4 +316,3 @@ save_n_sets(cool, metric_to_plot='n_sets', out_file='numbers_sets_significant.pd
 
 
 ### end
- # not in slides : [ 'Brain-sgt-rat', 'Brain-trv-rat', 'Heart-aorta-mouse', 'Eye-mouse', 'MALDI_260_T', 'MALDI_262_T', 'MALDI_269_T',  'Ovary-ca-mouse', 'Cerebellum-mouse',  'Kidney-mouse',  'Gut-mouse']
