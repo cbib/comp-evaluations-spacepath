@@ -8,7 +8,7 @@ echo "First make sure that src/setup_input/input.py populated ../input folder"
 echo ""
 echo "Calling SpacePath"
 
-CONFIG="config/minimal_foo.tsv"   # config/baseline.tsv
+CONFIG="config/baseline.tsv"   # config/minimal_foo.tsv
 
 # same parent folder for both figures and results
 OUT_DIR="output/0_baseline/"

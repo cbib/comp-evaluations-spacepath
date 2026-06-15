@@ -78,6 +78,11 @@ Structure of this work:
         └── setup_input.py
 
 ```
+
+**Important:**
+
+The `input` and `output` folders are marked in the .gitignore and are therefore not uploaded to the GitHub, and this is expected.
+
 ------------------
 Author: 
 Johanna Galvis

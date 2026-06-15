@@ -4,7 +4,7 @@ import pandas as pd
 import anndata as ad
 
 params_dir = "../../config/"
-orig_data = "../../../dataLOCAL/"  # TODO replace with data when needed
+orig_data = "../../../data/"            # "../../../dataLOCAL/"
 input_dir =  "../../input/"
 output_dir = "../../output/"
 
