@@ -1,3 +1,7 @@
 input/*/*
 output/*/*
 src/reporting/logs
+src/reporting/metric1.png      # because heavy
+src/reporting/metric1.pdf      # because heavy
+src/reporting/metric2.pdf      # because heavy
+src/reporting/metric3.pdf      # because heavy
