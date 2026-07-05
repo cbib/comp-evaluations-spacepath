@@ -5,14 +5,13 @@ import os
 from typing import Dict, List
 
 import smpath.processing as smp
-from SpacePath import api as sap
-from SpacePath.src.orchestrator import DatasetsProcessor as DP
+
 import numpy as np
 import pandas as pd
 from scipy.sparse import csr_matrix
+
 import SpacePath.src.helpers as s_helpers
-import squidpy as sq
-import seaborn as sns
+
 import re
 
 
@@ -97,22 +96,6 @@ def compute_lipid_species(names_list: List[str]):
     return list(lipid_species)
 
 
-# def extract_lipid_class(full_lipid_name:str):
-#     # Extract the substring before the first '('
-#     match = re.match(r'^([^(]+)', full_lipid_name)
-#
-#     return match.group(1) if match else "UNDETERMINED"
-
-
-# def compute_lipid_classes(names_list: List[str]):
-#     lipid_classes = set()
-#     if len(names_list) > 0:
-#         for name in names_list:
-#             lipid_classes = lipid_classes.union({extract_lipid_class(name)})
-#
-#     return list(lipid_classes)
-
-
 def mappings_only_families(mapps_df: pd.DataFrame)->pd.DataFrame:
     mapps_df = mapps_df.loc[
         ~mapps_df['pathway_id'].str.startswith("hsa"), :].copy()
@@ -123,8 +106,11 @@ def mappings_only_families(mapps_df: pd.DataFrame)->pd.DataFrame:
     return mapps_df
 
 
-def family_molecule_mz_ambiguity_propagation_score(mapps_df: pd.DataFrame, i_fam: str, remaining_fams):
-    remain_df = mapps_df.loc[mapps_df["pathway_id"].isin(remaining_fams),:].copy()
+def family_molecule_mz_ambiguity_propagation_score(
+        mapps_df: pd.DataFrame,
+        i_fam: str, remaining_fams):
+    remain_df = mapps_df.loc[mapps_df["pathway_id"].isin(
+        remaining_fams),:].copy()
     i_df = mapps_df.loc[mapps_df["pathway_id"] == i_fam,:].copy()
 
     ambigs_scores_mzs = []
@@ -135,16 +121,9 @@ def family_molecule_mz_ambiguity_propagation_score(mapps_df: pd.DataFrame, i_fam
             remain_df["mz"].astype(str) == str(i_mz), :].copy()
         i_f_mz = i_df.loc[i_df["mz"].astype(str) == str(i_mz), :].copy()
 
-        # all_ids__i_mz = list(
-        #     set(remain_f_mz["moleculeNames"].unique().tolist()).union(
-        #         set(i_f_mz["moleculeNames"].unique().tolist())
-        #     )
-        # )
-
-        # species_all__i_mz = compute_lipid_species(all_ids__i_mz)
         species_in = compute_lipid_species(i_f_mz["moleculeNames"].unique().tolist())
         species_out = compute_lipid_species(remain_f_mz["moleculeNames"].unique().tolist())
-        # species_union = set(species_in).union(set(species_out))
+
         species_common = set(species_in).intersection(set(species_out)) # this penalizes the score
 
         ambigs_scores_mzs.append(
@@ -176,9 +155,6 @@ def compute_ambig_propag_across_families( SAMPLE,
 
     # discard all rows with  pathways (leads to errors):
     mapps_df = mappings_only_families(mapps_df)
-
-    # mapps_df = mapps_df.loc[mapps_df['database'] == "HMDB", :].copy()
-    # mzs_uniq = mapps_df['mz'].astype(str).unique().tolist()
 
     fams_uniq = [h for h in mapps_df['pathway_id'].astype(str).unique().tolist()
                  if h.startswith("MolFam")]
