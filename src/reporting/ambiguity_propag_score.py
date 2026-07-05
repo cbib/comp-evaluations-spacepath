@@ -1,7 +1,6 @@
 # johaGL2026
 # ambiguity propagation score
 
-
 import os
 from typing import Dict, List
 
