@@ -10,6 +10,7 @@ The computational validations are performed by the scripts:
 * `1_ablation_nofilter.sh`
 * `2_ablation_random_id.sh`
 
+The order must be respected.
 
 Finally, the scripts that are located in `src/reporting` produce the 
 tables and figures that summarize all the results for the Supplementary Methods
