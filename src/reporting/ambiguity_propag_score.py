@@ -13,7 +13,6 @@ import pandas as pd
 from scipy.sparse import csr_matrix
 import SpacePath.src.helpers as s_helpers
 import squidpy as sq
-import matplotlib.pyplot as plt
 import seaborn as sns
 import re
 
@@ -99,11 +98,11 @@ def compute_lipid_species(names_list: List[str]):
     return list(lipid_species)
 
 
-def extract_lipid_class(full_lipid_name:str):
-    # Extract the substring before the first '('
-    match = re.match(r'^([^(]+)', full_lipid_name)
-
-    return match.group(1) if match else "UNDETERMINED"
+# def extract_lipid_class(full_lipid_name:str):
+#     # Extract the substring before the first '('
+#     match = re.match(r'^([^(]+)', full_lipid_name)
+#
+#     return match.group(1) if match else "UNDETERMINED"
 
 
 # def compute_lipid_classes(names_list: List[str]):
@@ -137,16 +136,16 @@ def family_molecule_mz_ambiguity_propagation_score(mapps_df: pd.DataFrame, i_fam
             remain_df["mz"].astype(str) == str(i_mz), :].copy()
         i_f_mz = i_df.loc[i_df["mz"].astype(str) == str(i_mz), :].copy()
 
-        all_ids__i_mz = list(
-            set(remain_f_mz["moleculeNames"].unique().tolist()).union(
-                set(i_f_mz["moleculeNames"].unique().tolist())
-            )
-        )
+        # all_ids__i_mz = list(
+        #     set(remain_f_mz["moleculeNames"].unique().tolist()).union(
+        #         set(i_f_mz["moleculeNames"].unique().tolist())
+        #     )
+        # )
 
-        species_all__i_mz = compute_lipid_species(all_ids__i_mz)
+        # species_all__i_mz = compute_lipid_species(all_ids__i_mz)
         species_in = compute_lipid_species(i_f_mz["moleculeNames"].unique().tolist())
         species_out = compute_lipid_species(remain_f_mz["moleculeNames"].unique().tolist())
-        species_union = set(species_in).union(set(species_out))
+        # species_union = set(species_in).union(set(species_out))
         species_common = set(species_in).intersection(set(species_out)) # this penalizes the score
 
         ambigs_scores_mzs.append(
@@ -180,8 +179,7 @@ def compute_ambig_propag_across_families( SAMPLE,
     mapps_df = mappings_only_families(mapps_df)
 
     # mapps_df = mapps_df.loc[mapps_df['database'] == "HMDB", :].copy()
-
-    mzs_uniq = mapps_df['mz'].astype(str).unique().tolist()
+    # mzs_uniq = mapps_df['mz'].astype(str).unique().tolist()
 
     fams_uniq = [h for h in mapps_df['pathway_id'].astype(str).unique().tolist()
                  if h.startswith("MolFam")]
