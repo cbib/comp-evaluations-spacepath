@@ -1,5 +1,5 @@
 import os
-import smpath.data as spd
+import SpacePath.core.data as spd
 from SpacePath import api as sap
 from SpacePath.src.orchestrator import DatasetsProcessor as DP
 import numpy as np

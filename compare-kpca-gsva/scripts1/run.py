@@ -16,12 +16,12 @@ def main(input_file, data_dir):
     \b
     Obtain the metabolite resolved matrix only, per set type (WIKI and KEGG)
       Requires:
-        - the `smpath` virtual environment
-        - the scripts1/ already applied, that copies from '../../data/' to ../../compar_out_2026 all the required files (clean annotations, .h5ad and
+        - the `spacepath` virtual environment
+        - the scripts0/ already applied, that copies from '../../../data/' to ../../../compar_out_2026 all the required files (clean annotations, .h5ad and
 
     usage:
     cd scripts1
-    python run.py ../the_data_list.tsv ../../compar_out_2026
+    python run.py ../the_data_list.tsv ../../../compar_out_2026
 
     \b
     Positional arguments:

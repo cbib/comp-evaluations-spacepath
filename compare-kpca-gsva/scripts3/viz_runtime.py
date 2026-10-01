@@ -32,7 +32,7 @@ out_gsva_reps = "../out_reports_scripts2"
 out_kpca_logfiles = ["copy_log_spacepath_kpca/26-03-21_18-30-11-328845.log",
                      "copy_log_spacepath_kpca/26-03-21_19-07-52-280348.log"
                      ]
-data_orig = "../../data"
+data_orig = "../../../data"
 
 input_file1 = "../the_data_list.tsv"
 df_data = pd.read_csv(input_file1,
@@ -93,16 +93,11 @@ fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(10, 6))
 sns.lineplot(foo, x='spots_n', y='value', hue='method', style='method',
              markers=True, palette=palette_methods)
 plt.ylabel("time")
-#plt.show()
+
 plt.tight_layout()
-# plt.show()
+
 plt.savefig("figs/viz_runtime_plot.pdf")
 plt.close()
 
+print("all visualizations saved into: figs/ folder in the current location")
 
-
-# trash
-# df = df_time[['gsva_time', 'kpca_time', 'spots_n']]
-# sns.lineplot(data=df, x='spots_n', y='gsva_time', color='purple')
-# sns.lineplot(data=df, x='spots_n', y='kpca_time', color='cadetblue')
-# plt.show()

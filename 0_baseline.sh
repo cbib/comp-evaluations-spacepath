@@ -3,7 +3,7 @@
 ##               Runs SpacePath with parameters as published                ##
 ##############################################################################
 # with the recommended parameters as stated in the config/baseline.tsv  file
-# works with 'smpath' environment activated
+# works with 'spacepath' environment activated
 echo "First make sure that src/setup_input/input.py populated ../input folder"
 echo ""
 echo "Calling SpacePath"

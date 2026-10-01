@@ -7,8 +7,8 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 import scanpy as sc
-from smpath.helpers import generate_coordinates_arr
-import smpath.processing.measures_methods as spm
+from SpacePath.core.helpers import generate_coordinates_arr
+import SpacePath.core.processing.measures_methods as spm
 from scipy.stats import zscore
 import squidpy as sq
 
@@ -202,8 +202,8 @@ def wrap_comp_moran(df:pd.DataFrame, coords_df:pd.DataFrame,
 
 if __name__ == '__main__':
 
-    out_parent_dir = '../../compar_out_2026'  # TODO: modify in server: compar_out_2026
-    dir_adata = "../../data" # TODO: modify in server: data
+    out_parent_dir = '../../../compar_out_2026'
+    dir_adata = "../../../data"
 
     tisues_df = pd.read_csv("../the_data_list.tsv", sep="\t",
                               index_col=None, header=0)
@@ -236,7 +236,6 @@ if __name__ == '__main__':
             matrix_gsva_kegg = normalize_scores(matrix_gsva_kegg)
             if len(kpca_kegg.columns) > 1:
                 tmp_df = return_pearsons_all_feats(kpca_kegg, matrix_gsva_kegg)
-                #tmp_df = tmp_df.assign(**{'abs(r)': tmp_df['r'].abs()})   # TODO: stop using abs r, use r correl only
                 tmp_df['tissue'] = SAMPLE
                 correls_dfs.append(tmp_df)
 

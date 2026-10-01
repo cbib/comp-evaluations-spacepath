@@ -3,10 +3,10 @@ import logging
 import warnings
 warnings.simplefilter('ignore',category=FutureWarning)
 import numpy as np
-from smpath.data import MetabolomeAnnotations
-from smpath.processing.measures_methods import compute_moran_i
-from smpath.helpers import setup_logger  # to add extra info to the smpath log
-import smpath.data as spd
+from SpacePath.core.data import MetabolomeAnnotations
+from SpacePath.core.processing.measures_methods import compute_moran_i
+from SpacePath.core.helpers import setup_logger  # to add extra info to the log
+import SpacePath.core.data as spd
 from sklearn.cluster import KMeans
 
 

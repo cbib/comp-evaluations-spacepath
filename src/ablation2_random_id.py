@@ -8,7 +8,7 @@ Runs SpacePath with a special modification in this code:
 
 import os
 import sys
-import smpath.data as spd
+import SpacePath.core.data as spd
 from SpacePath import api as sap
 from SpacePath.src.orchestrator import DatasetsProcessor as DP
 import numpy as np
@@ -42,7 +42,7 @@ for _, row in params_df.iterrows():
         name=sample, data_dir=centralized_data_dir,
         subfolder=subfolder,
         annotation_files=annotations_dict)
-    annots_obj.load()  # load annotations with smpath library
+    annots_obj.load()  # load annotations with library
 
     sap.normalize_classify_and_save_anndata_mz(
         annots_obj,

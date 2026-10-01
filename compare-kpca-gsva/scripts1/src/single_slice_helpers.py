@@ -7,7 +7,7 @@ import scanpy as sc
 from typing import Dict, List, Union
 
 from scipy.sparse import csr_matrix
-import smpath.method as spm
+import SpacePath.core.method as spm
 
 
 

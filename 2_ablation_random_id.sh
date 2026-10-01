@@ -3,7 +3,7 @@
 ##  Runs SpacePath, selecting random compound ID for pathways and families  ##
 ##############################################################################
 
-# works with smpath env activated
+# works with spacepath env activated
 
 CONFIG="config/baseline.tsv"  # ok as the changement is in the .py script
 

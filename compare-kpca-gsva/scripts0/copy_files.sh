@@ -1,9 +1,9 @@
 #!/bin/bash
-orig_dir="../../data"
+orig_dir="../../../data"
 tissues=$(cat ../the_data_list.tsv | cut -f 1 )
 
 echo ${tissues[@]}
-destination="../../compar_out_2026"
+destination="../../../compar_out_2026"
 
 for u in ${tissues[@]}; do
   if [ $u != "dataset_name" ]; then
