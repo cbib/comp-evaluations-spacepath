@@ -181,7 +181,7 @@ for tissue in tissues:
         # * ambiguity propagation score exclusively for families
         #if ablation_dir != '3_ablation_pathways_alone':
         try:
-            df_aps= compute_ambig_propag_across_families(
+            df_aps = compute_ambig_propag_across_families(
                  tissue,
                 subfolder=os.path.join(ablation_dir, tissue),
                 data_centralized_folder=out_dir)
