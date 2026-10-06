@@ -1,6 +1,6 @@
 # Computational validations of the SpacePath pipeline
 
-## How to obtain summarized reporting of the results of the ablations vs the baseline SpacePath pipeline
+## How to run the perturbations (ablations) analyses
 
 Before starting the computational validations, the input folder must be populated. 
 Specific instructions for the setup of the input folder are in `src/setup_input` folder.
@@ -12,16 +12,18 @@ The computational validations are performed by the scripts:
 
 The order must be respected.
 
-Finally, the scripts that are located in `src/reporting` produce the 
+
+## Summarized reporting of the results of the ablations vs the baseline 
+
+The scripts that are located in `src/reporting` produce the 
 tables and figures that summarize all the results for the Supplementary Methods
 section of the paper.
-
 
 ------------------
 
 ## Appendix
 
-Structure of this work:
+1. Complete structure of this work:
 
 ```text
 ├── 0_baseline.sh
@@ -79,6 +81,10 @@ Structure of this work:
         └── setup_input.py
 
 ```
+
+2. The comparison of the performances of the k-PCA and GSVA methods for sets scoring was 
+developed in a separate repository. Now this comparison is included within this repository, in
+the subfolder `compare-kpca-gsva`. It contains its own README.md with instructions.
 
 **Important:**
 

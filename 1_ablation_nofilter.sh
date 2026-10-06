@@ -2,7 +2,7 @@
 ##############################################################################
 ##          Runs SpacePath without filtering the m/z features               ##
 ##############################################################################
-# works with 'smpath' environment activated
+# works with 'spacepath' environment activated
 
 
 PARAMS_FILE="config/no_filter.tsv"   # config for retaining all features

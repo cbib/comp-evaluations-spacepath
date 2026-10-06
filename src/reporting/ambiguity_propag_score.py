@@ -4,7 +4,7 @@
 import os
 from typing import Dict, List
 
-import smpath.processing as smp
+import SpacePath.core.processing as smp
 
 import numpy as np
 import pandas as pd

@@ -3,8 +3,19 @@ output/*/*
 src/reporting/logs
 *.iml
 *.xml
+logs/
+*/logs
+*/*/logs
+compare-kpca-gsva/Stomach-rat/
+*/__pycache__
+*/*/__pycache__
+.idea
+*/.idea
+*/*/.idea
+
 # because heavy, ignore these files :
 src/reporting/metric1.png
 src/reporting/metric1.pdf
 src/reporting/metric2.pdf
 src/reporting/metric3.pdf
+

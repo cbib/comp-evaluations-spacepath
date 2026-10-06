@@ -1,14 +1,13 @@
 import os
 import numpy as np
-from typing import List, Tuple, Dict, Union
 import pandas as pd
 import anndata as ad
 import pickle
-import smpath.data as spd
-import smpath.method as spm
+import SpacePath.core.data as spd
+import SpacePath.core.method as spm
 import SpacePath.src.helpers as s_helpers
 
-
+# Helpers for the Behavior in randoM mode (bmhelpers) for random_id ablation
 
 pathways_files_location_info = {
         "KEGG" : {'file': "KEGG_hsa_pathways_compounds_R110.gmt",
@@ -157,6 +156,8 @@ def handle_error_families_scores(
                             subfolder,
                                data_centralized_folder ):
     """
+    Adds a NaN anndata object to allow for structured input for the box-plots:
+      in the plot, no dots are displayed, but the categories are preserved
     """
     adata_mz = ad.read_h5ad(os.path.join(data_centralized_folder, subfolder,
                                          f'{sample}.h5ad' ))
@@ -176,4 +177,3 @@ def handle_error_families_scores(
                                   coords)
     scores_adata.write_h5ad(os.path.join(data_centralized_folder,
                                          subfolder, f'{sample}-scores-FAMILIES.h5ad'))
-
