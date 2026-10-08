@@ -82,8 +82,7 @@ section of the paper.
 
 ```
 
-2. The comparison of the performances of the k-PCA and GSVA methods for sets scoring was 
-developed in a separate repository. Now this comparison is included within this repository, in
+2. The comparison of the performances of the k-PCA and GSVA is included within this repository, in
 the subfolder `compare-kpca-gsva`. It contains its own README.md with instructions.
 
 **Important:**
